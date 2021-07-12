@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         LandmarkList.init()
-            .frame(minWidth: 700, idealWidth: nil, maxWidth: nil, minHeight: 300, idealHeight: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, maxHeight: nil, alignment: .center)
+            .frame(minWidth: 700, minHeight: 300)
     }
 }
 
