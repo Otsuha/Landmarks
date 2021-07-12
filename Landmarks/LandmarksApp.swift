@@ -26,5 +26,11 @@ struct LandmarksApp: App {
         #else
         mainWindow
         #endif
+        
+        #if os(macOS)
+        Settings.init {
+            LandmarkSettings.init()
+        }
+        #endif
     }
 }

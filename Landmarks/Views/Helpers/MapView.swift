@@ -10,19 +10,41 @@ import MapKit
 
 struct MapView: View {
     var coordinate: CLLocationCoordinate2D
-    // State 存储真实数据。
-    @State private var region = MKCoordinateRegion.init()
+    
+    @AppStorage("MapView.zoom") private var zoom: Self.Zoom = .medium
+    
+    enum Zoom: String, CaseIterable, Identifiable {
+        case near = "Near"
+        case medium = "Medium"
+        case far = "Far"
+        
+        var id: Zoom {
+            return self
+        }
+    }
+    
+    var delta: CLLocationDegrees {
+        switch self.zoom {
+        case .near:
+            return 0.02
+        case .medium:
+            return 0.2
+        case .far:
+            return 2
+        }
+    }
     
     var body: some View {
-        Map.init(coordinateRegion: $region)
-            .onAppear(perform: {
-                self.setRegion(self.coordinate)
-            })
+        Map.init(coordinateRegion: .constant(self.region))
     }
     
-    private func setRegion(_ coordinate: CLLocationCoordinate2D) {
-        self.region = MKCoordinateRegion.init(center: coordinate, span: MKCoordinateSpan.init(latitudeDelta: 0.2, longitudeDelta: 0.2))
+    var region: MKCoordinateRegion {
+        MKCoordinateRegion.init(
+            center: self.coordinate,
+            span: MKCoordinateSpan.init(latitudeDelta: self.delta, longitudeDelta: self.delta)
+        )
     }
+    
 }
 
 struct MapView_Previews: PreviewProvider {
